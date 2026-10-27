@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>History | MailCheck</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+
+        <aside class="sidebar">
+            <h2 class="sidebar-title">MailCheck</h2>
+            <p>Email Verification Tool</p>
+
+            <nav>
+                <a class="nav-link" href="{{ url_for('home') }}">Dashboard</a>
+                <a class="nav-link" href="{{ url_for('history') }}">History</a>
+                <a class="nav-link" href="{{ url_for('analytics') }}">Analytics</a>
+                <a class="nav-link" href="{{ url_for('settings') }}">Settings</a>
+                <a class="nav-link" href="{{ url_for('about') }}">About</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="container">
+
+                <h1>Verification History</h1>
+                <p>Review your previous email verification results.</p>
+
+                <section class="card">
+                    <h2>Recent Activity</h2>
+
+                    {% if records %}
+                    <div style="overflow-x: auto;">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Email Address</th>
+                                    <th>Status</th>
+                                    <th>Reason</th>
+                                    <th>Checked At</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                {% for record in records %}
+                                <tr>
+                                    <td>{{ record["email"] }}</td>
+                                    <td>{{ record["status"] }}</td>
+                                    <td>{{ record["reason"] }}</td>
+                                    <td>{{ record["checked_at"] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    {% else %}
+                    <p>No verification history yet.</p>
+                    <p>Go to the Dashboard and verify some emails first.</p>
+                    {% endif %}
+
+                </section>
+
+                <p>
+                    <a href="{{ url_for('home') }}">← Back to Dashboard</a>
+                </p>
+
+            </div>
+        </main>
+
+    </div>
+</body>
+</html>
