@@ -8,10 +8,8 @@ I built this project to apply my programming knowledge to a practical problem an
 
 ## 🚀 Live Demo
 
-- **Live Application:** [Try MailCheck] https://mailcheck-8hdw.onrender.com
-- **GitHub Repository:** [Explore the Source Code]
-
-*Replace these placeholder links with your actual Render and GitHub URLs.*
+- **Live Application:** https://mailcheck-8hdw.onrender.com
+- **GitHub Repository:** https://github.com/PainiDeviSravani/MailCheck
 
 ## ✨ Features
 
@@ -27,7 +25,6 @@ I built this project to apply my programming knowledge to a practical problem an
 ## 🛠️ Technologies Used
 
 | Technology | How it is used |
-|---|---|
 | Python | Application logic |
 | Flask | Building the web application |
 | HTML | Structuring web pages |
@@ -70,4 +67,117 @@ MailCheck/
     └── style.css
 ```
 
-The `app
+The `app.py` file contains the main application logic. The `templates` folder contains the HTML pages, while `static/style.css` controls the appearance of the interface. The `requirements.txt` file lists the Python packages needed to run the project, and `test_app.py` contains the project's tests.
+
+The `mailcheck.db` SQLite database is created when the application initializes the database.
+
+## 💻 How to Run the Project Locally
+
+Follow these steps to run MailCheck on your computer.
+
+### Step 1: Clone the repository
+
+```bash
+git clone YOUR_GITHUB_REPOSITORY_URL_HERE
+```
+
+Replace the placeholder with your actual repository URL.
+
+### Step 2: Open the project folder
+
+```bash
+cd MailCheck
+```
+
+If your repository uses a different folder name, use that name instead.
+
+### Step 3: Install the dependencies
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+### Step 4: Run the application
+
+```bash
+python app.py
+```
+
+### Step 5: Open MailCheck
+
+Open your browser and visit:
+
+```text
+http://127.0.0.1:5000
+```
+
+The application should now be available on your local computer.
+
+## 🧪 Testing
+
+MailCheck includes a test file named `test_app.py`. You can run the tests using:
+
+```bash
+python -m pytest
+```
+
+Pytest will display the results and indicate whether the tests passed or failed.
+
+## 🌐 Deployment
+
+The application is deployed on **Render**, making it accessible through a public URL.
+
+The deployment configuration uses the following commands.
+
+**Build command**
+
+```bash
+pip install -r requirements.txt
+```
+
+**Start command**
+
+```bash
+gunicorn app:app
+```
+
+## 🔒 Limitations
+
+- The application checks email formatting and domain DNS records but cannot confirm the existence of an individual mailbox.
+- Some domains may not provide enough DNS information for a clear result.
+- A successful DNS check does not guarantee email delivery.
+- Verification history may be lost when the hosted application restarts or redeploys if persistent storage is not configured.
+
+## 🎯 What I Learned
+
+Building MailCheck gave me an opportunity to work on a complete web application rather than just individual programming exercises. Through this project, I gained practical experience in:
+
+- Developing a web application with Python and Flask.
+- Validating user input and handling web requests.
+- Performing DNS lookups using Python.
+- Storing and retrieving information with SQLite.
+- Organizing HTML templates, CSS, and application code.
+- Writing and running tests with pytest.
+- Deploying a Python application using Render.
+
+## 🔮 Future Improvements
+
+I would like to continue improving MailCheck by exploring the following features:
+
+- Adding an option to export verification results as CSV files.
+- Improving error messages and user feedback.
+- Expanding automated test coverage.
+- Making the analytics dashboard more informative.
+- Configuring persistent storage for verification history.
+- Improving performance when handling larger batches of email addresses.
+
+## 👩‍💻 About Me
+
+**Paini Devi Sravani**  
+B.Tech – Computer Science and Engineering
+
+I am interested in software development and enjoy learning new technologies by building practical projects. MailCheck is one of my efforts to strengthen my programming skills and gain experience in developing and deploying web applications.
+
+---
+
+*MailCheck is an educational project. Its verification results are indicative only and should not be treated as a guarantee of email deliverability.*
