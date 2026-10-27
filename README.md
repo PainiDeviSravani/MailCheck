@@ -54,7 +54,7 @@ I built this project to apply my programming knowledge to a practical problem an
 
 ### Settings
 <img width="1530" height="727" alt="image" src="https://github.com/user-attachments/assets/12c54559-9192-41dc-9222-e7715168ea0f" />
-### About
+###  About
 <img width="1513" height="576" alt="image" src="https://github.com/user-attachments/assets/2c42739f-9247-4c03-8507-9b7538530bc9" />
 <img width="1522" height="730" alt="image" src="https://github.com/user-attachments/assets/39b9c472-a3a2-4ca9-a6c4-9ee529bc96bd" />
 
