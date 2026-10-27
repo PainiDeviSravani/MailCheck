@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | MailCheck</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="app-layout">
+        <aside class="sidebar">
+            <h2 class="sidebar-title">MailCheck</h2>
+            <p>Email Verification Tool</p>
+
+            <nav>
+                <a class="nav-link" href="{{ url_for('home') }}">Dashboard</a>
+                <a class="nav-link" href="{{ url_for('history') }}">History</a>
+                <a class="nav-link" href="{{ url_for('analytics') }}">Analytics</a>
+                <a class="nav-link" href="{{ url_for('settings') }}">Settings</a>
+                <a class="nav-link" href="{{ url_for('about') }}">About</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <div class="container">
+                <h1>About MailCheck</h1>
+                <p>A simple web application for bulk email checks.</p>
+
+                <section class="card">
+                    <h2>Project Overview</h2>
+                    <p>
+                        MailCheck is a web application designed to check
+                        email address formatting and inspect domain DNS
+                        records to help identify potentially problematic
+                        email addresses.
+                    </p>
+                </section>
+
+                <section class="card">
+                    <h2>Key Features</h2>
+                    <ul>
+                        <li>Bulk email verification</li>
+                        <li>Email format validation</li>
+                        <li>DNS and mail exchange (MX) record checks</li>
+                        <li>Verification history stored in SQLite</li>
+                        <li>Analytics dashboard for recorded results</li>
+                        <li>CSV export of verification results</li>
+                    </ul>
+                </section>
+
+                <section class="card">
+                    <h2>Technologies Used</h2>
+                    <ul>
+                        <li><strong>Python:</strong> Backend logic</li>
+                        <li><strong>Flask:</strong> Web application framework</li>
+                        <li><strong>dnspython:</strong> DNS record lookups</li>
+                        <li><strong>SQLite:</strong> Local history database</li>
+                        <li><strong>HTML and CSS:</strong> User interface</li>
+                        <li><strong>JavaScript:</strong> Frontend interactions</li>
+                    </ul>
+                </section>
+
+                <section class="card">
+                    <h2>Important Limitations</h2>
+                    <p>
+                        A successful DNS check does not prove that a
+                        particular mailbox exists. Results are estimates,
+                        not guarantees of email delivery.
+                    </p>
+                    <p>
+                        MailCheck does not send emails or guarantee that
+                        an address can receive messages.
+                    </p>
+                </section>
+
+                <a href="{{ url_for('home') }}">← Back to Dashboard</a>
+            </div>
+        </main>
+    </div>
+</body>
+</html>
