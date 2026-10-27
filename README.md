@@ -78,18 +78,14 @@ Follow these steps to run MailCheck on your computer.
 ### Step 1: Clone the repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL_HERE
+git clone https://github.com/PainiDeviSravani/MailCheck
 ```
-
-Replace the placeholder with your actual repository URL.
 
 ### Step 2: Open the project folder
 
 ```bash
 cd MailCheck
 ```
-
-If your repository uses a different folder name, use that name instead.
 
 ### Step 3: Install the dependencies
 
