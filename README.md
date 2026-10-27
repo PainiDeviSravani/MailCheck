@@ -24,23 +24,48 @@ I built this project to apply my programming knowledge to a practical problem an
 
 ## 🛠️ Technologies Used
 
-| Technology | How it is used |
-| Python
-| 
+🛠️ Technologies Used
+
+Technology
+
+How it is used
+
+Python
+
 Application logic
-|
-| Flask | 
-Building the web application 
-|
-| HTML 
-| Structuring web pages 
-|
-| CSS | Styling the interface |
-| SQLite | Storing verification history |
-| dnspython | Checking domain DNS records |
-| Gunicorn | Running the application in production |
-| Render | Hosting and deployment |
-| pytest | Running automated tests |
+
+Flask
+
+Building the web application
+
+HTML
+
+Structuring web pages
+
+CSS
+
+Styling the interface
+
+SQLite
+
+Storing verification history
+
+dnspython
+
+Checking domain DNS records
+
+Gunicorn
+
+Running the application in production
+
+Render
+
+Hosting and deployment
+
+pytest
+
+Running automated tests
+
 
 ## ⚙️ How It Works
 
