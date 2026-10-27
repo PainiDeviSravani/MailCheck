@@ -1,0 +1,406 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f766e">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <title>MailCheck | Bulk Email Verification</title>
+</head>
+
+<body>
+<div class="app-layout">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" aria-label="Main navigation">
+        <div class="sidebar-title">✉ MailCheck</div>
+
+        <nav>
+            <a class="nav-link active"
+               href="{{ url_for('home') }}"
+               aria-current="page">▦ Dashboard</a>
+
+            <a class="nav-link"
+               href="{{ url_for('history') }}">◷ History</a>
+
+            <a class="nav-link"
+               href="{{ url_for('analytics') }}">▥ Analytics</a>
+
+            <a class="nav-link"
+               href="{{ url_for('settings') }}">⚙ Settings</a>
+
+            <a class="nav-link"
+               href="{{ url_for('about') }}">ⓘ About</a>
+        </nav>
+    </aside>
+
+    <!-- Main Dashboard -->
+    <div class="main-content">
+        <div class="container">
+
+            <header>
+                <div class="logo" aria-hidden="true">M</div>
+                <div>
+                    <h1>MailCheck</h1>
+                    <p class="subtitle">Bulk Email Verification Dashboard</p>
+                </div>
+            </header>
+
+            <main>
+                <!-- Email Input -->
+                <section class="card">
+                    <h2>Verify your email list</h2>
+
+                    <p class="section-description">
+                        Check email formats and domain mail records in one place.
+                    </p>
+
+                    <label for="emails"><strong>Email addresses</strong></label>
+
+                    <textarea id="emails"
+                        placeholder="alex@gmail.com&#10;hello@example.com&#10;invalid-email"
+                        aria-describedby="inputHelp"></textarea>
+
+                    <p id="inputHelp" class="input-help">
+                        Enter one address per line. Maximum 500 addresses per batch.
+                    </p>
+
+                    <div class="actions">
+                        <button class="primary" id="verifyButton"
+                            onclick="verifyEmails()">
+                            Verify Emails
+                        </button>
+
+                        <button class="secondary" type="button"
+                            onclick="loadSample()">
+                            Try Sample
+                        </button>
+
+                        <button class="secondary" type="button"
+                            onclick="downloadCSV()">
+                            Download CSV
+                        </button>
+                    </div>
+
+                    <p id="message" class="message"
+                       role="status" aria-live="polite"></p>
+                </section>
+
+                <!-- Verification Results -->
+                <section id="results" class="hidden">
+                    <h2>Verification overview</h2>
+
+                    <div class="stats">
+                        <div class="stat">
+                            <span class="stat-label">Total checked</span>
+                            <strong class="total-value" id="total">0</strong>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-label">Likely delivered</span>
+                            <strong class="green" id="delivered">0</strong>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-label">Likely bounce</span>
+                            <strong class="red" id="bounce">0</strong>
+                        </div>
+
+                        <div class="stat">
+                            <span class="stat-label">Unknown</span>
+                            <strong class="orange" id="unknown">0</strong>
+                        </div>
+                    </div>
+
+                    <section class="card">
+                        <div class="results-heading">
+                            <h2>Verification results</h2>
+                            <span id="visibleCount" class="muted"></span>
+                        </div>
+
+                        <div class="filters">
+                            <div>
+                                <label for="searchInput" class="input-help">
+                                    Search by email
+                                </label>
+
+                                <input type="search" id="searchInput"
+                                    placeholder="Search addresses..."
+                                    oninput="renderResults()">
+                            </div>
+
+                            <div>
+                                <label for="statusFilter" class="input-help">
+                                    Filter by status
+                                </label>
+
+                                <select id="statusFilter"
+                                    onchange="renderResults()">
+                                    <option value="all">All statuses</option>
+                                    <option value="Likely delivered">
+                                        Likely delivered
+                                    </option>
+                                    <option value="Likely bounce">
+                                        Likely bounce
+                                    </option>
+                                    <option value="Unknown">Unknown</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Email address</th>
+                                        <th>Status</th>
+                                        <th>Reason</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="resultRows"></tbody>
+                            </table>
+                        </div>
+
+                        <p id="emptyState" class="empty-state hidden">
+                            No results match your search or filter.
+                        </p>
+
+                        <p class="note">
+                            Results are estimates based on email format and DNS
+                            records. They do not confirm that a mailbox exists
+                            or guarantee successful delivery.
+                        </p>
+                    </section>
+                </section>
+            </main>
+
+            <footer>
+                MailCheck · Built with Python, Flask, HTML, CSS and JavaScript
+            </footer>
+        </div>
+    </div>
+</div>
+
+<script>
+    let latestResults = [];
+
+    function showMessage(text, type = "") {
+        const message = document.getElementById("message");
+        message.textContent = text;
+        message.className = "message";
+
+        if (type) {
+            message.classList.add(type);
+        }
+    }
+
+    function loadSample() {
+        document.getElementById("emails").value =
+            "hello@gmail.com\ninvalid-email\ncontact@example.com";
+
+        showMessage(
+            "Sample addresses loaded. Click Verify Emails to begin."
+        );
+    }
+
+    async function verifyEmails() {
+        const input = document.getElementById("emails").value;
+
+        const emails = input.split(/\r?\n/)
+            .map(email => email.trim())
+            .filter(email => email.length > 0);
+
+        if (emails.length === 0) {
+            showMessage("Please enter at least one email address.", "error");
+            document.getElementById("emails").focus();
+            return;
+        }
+
+        if (emails.length > 500) {
+            showMessage(
+                "Please enter no more than 500 addresses per batch.",
+                "error"
+            );
+            return;
+        }
+
+        const button = document.getElementById("verifyButton");
+        button.disabled = true;
+        button.textContent = "Checking...";
+
+        showMessage(
+            `Checking ${emails.length} email address(es). Please wait.`
+        );
+
+        try {
+            const response = await fetch("/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ emails: emails })
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || "Verification failed.");
+            }
+
+            if (!Array.isArray(data.results)) {
+                throw new Error("The server returned an invalid response.");
+            }
+
+            latestResults = data.results;
+
+            let delivered = 0;
+            let bounce = 0;
+            let unknown = 0;
+
+            latestResults.forEach(item => {
+                if (item.status === "Likely delivered") delivered++;
+                else if (item.status === "Likely bounce") bounce++;
+                else unknown++;
+            });
+
+            document.getElementById("total").textContent =
+                latestResults.length;
+            document.getElementById("delivered").textContent = delivered;
+            document.getElementById("bounce").textContent = bounce;
+            document.getElementById("unknown").textContent = unknown;
+
+            document.getElementById("results").classList.remove("hidden");
+
+            document.getElementById("searchInput").value = "";
+            document.getElementById("statusFilter").value = "all";
+
+            renderResults();
+
+            showMessage(
+                `Verification completed: ${latestResults.length} result(s) processed.`,
+                "success"
+            );
+
+        } catch (error) {
+            showMessage(
+                "Unable to complete verification: " + error.message,
+                "error"
+            );
+        } finally {
+            button.disabled = false;
+            button.textContent = "Verify Emails";
+        }
+    }
+
+    function renderResults() {
+        const rows = document.getElementById("resultRows");
+        const searchTerm = document.getElementById("searchInput")
+            .value.trim().toLowerCase();
+        const selectedStatus = document.getElementById("statusFilter").value;
+
+        const filteredResults = latestResults.filter(item => {
+            const matchesSearch = item.email.toLowerCase()
+                .includes(searchTerm);
+
+            const matchesStatus = selectedStatus === "all" ||
+                item.status === selectedStatus;
+
+            return matchesSearch && matchesStatus;
+        });
+
+        rows.replaceChildren();
+
+        filteredResults.forEach(item => {
+            const tr = document.createElement("tr");
+
+            const emailCell = document.createElement("td");
+            emailCell.textContent = item.email;
+            tr.appendChild(emailCell);
+
+            const statusCell = document.createElement("td");
+            const badge = document.createElement("span");
+            badge.classList.add("status-badge");
+
+            if (item.status === "Likely delivered") {
+                badge.classList.add("status-delivered");
+            } else if (item.status === "Likely bounce") {
+                badge.classList.add("status-bounce");
+            } else {
+                badge.classList.add("status-unknown");
+            }
+
+            badge.textContent = item.status;
+            statusCell.appendChild(badge);
+            tr.appendChild(statusCell);
+
+            const reasonCell = document.createElement("td");
+            reasonCell.textContent = item.reason;
+            tr.appendChild(reasonCell);
+
+            rows.appendChild(tr);
+        });
+
+        document.getElementById("visibleCount").textContent =
+            `Showing ${filteredResults.length} of ${latestResults.length}`;
+
+        document.getElementById("emptyState").classList.toggle(
+            "hidden",
+            filteredResults.length > 0
+        );
+    }
+
+    function downloadCSV() {
+        if (latestResults.length === 0) {
+            showMessage(
+                "Verify some addresses before downloading the report.",
+                "error"
+            );
+            return;
+        }
+
+        const escapeCSV = value => {
+            let text = String(value ?? "");
+
+            if (/^[\s]*[=+\-@\t\r]/.test(text)) {
+                text = "'" + text;
+            }
+
+            return '"' + text.replace(/"/g, '""') + '"';
+        };
+
+        const rows = [
+            ["Email", "Status", "Reason"],
+            ...latestResults.map(item => [
+                item.email,
+                item.status,
+                item.reason
+            ])
+        ];
+
+        const csv = rows
+            .map(row => row.map(escapeCSV).join(","))
+            .join("\r\n");
+
+        const blob = new Blob(["\uFEFF" + csv], {
+            type: "text/csv;charset=utf-8;"
+        });
+
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = "mailcheck-results.csv";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+        showMessage("CSV report downloaded successfully.", "success");
+    }
+</script>
+</body>
+</html>
