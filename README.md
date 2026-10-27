@@ -37,6 +37,27 @@ I built this project to apply my programming knowledge to a practical problem an
 | Render | Hosting and deployment |
 | pytest | Running automated tests |
 
+## 📸 Application Screenshots
+
+### Home Page
+<img width="1535" height="728" alt="image" src="https://github.com/user-attachments/assets/021a3a64-82c4-477e-bb93-d04e27830a61" />
+
+### Email Verification Results
+<img width="1522" height="586" alt="image" src="https://github.com/user-attachments/assets/cba96169-73ca-4d2a-ba93-43a92e20cdf0" />
+<img width="1517" height="727" alt="image" src="https://github.com/user-attachments/assets/c9f605a9-4df3-432e-83e5-969fc94bf06c" />
+
+### Analytics Dashboard
+<img width="1527" height="712" alt="image" src="https://github.com/user-attachments/assets/8b1923fb-99fe-455c-a862-918d480c17df" />
+
+### Verification History
+<img width="1515" height="732" alt="image" src="https://github.com/user-attachments/assets/f324a780-cfff-4c32-97b7-f87c24e41b49" />
+
+### Settings
+<img width="1530" height="727" alt="image" src="https://github.com/user-attachments/assets/12c54559-9192-41dc-9222-e7715168ea0f" />
+### About
+<img width="1513" height="576" alt="image" src="https://github.com/user-attachments/assets/2c42739f-9247-4c03-8507-9b7538530bc9" />
+<img width="1522" height="730" alt="image" src="https://github.com/user-attachments/assets/39b9c472-a3a2-4ca9-a6c4-9ee529bc96bd" />
+
 ## ⚙️ How It Works
 
 1. The user enters one or more email addresses into the application.
